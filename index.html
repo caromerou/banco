@@ -29,7 +29,7 @@
                 <p style="font-size: 0.75rem; color: var(--accent-color);">Seleccionar Caso de Estudio:</p>
             </div>
             <ul id="problem-list" class="problem-list">
-                <!-- Se llena con JS -->
+                <!-- Se llena dinámicamente con JS -->
             </ul>
         </aside>
 
@@ -63,7 +63,7 @@
                     <h1>Historias de Usuario (HUs) & Criterios de Aceptación</h1>
                 </header>
                 <div id="hu-container">
-                    <!-- Se llena con JS para cada caso -->
+                    <!-- Se llena dinámicamente con JS -->
                 </div>
             </div>
 
@@ -73,13 +73,9 @@
                     <span class="category-badge">Modelado UML / BPMN</span>
                     <h1>Diagramas de Análisis y Secuencia</h1>
                 </header>
-                <section class="card-section">
-                    <h3>📊 Arquitectura de Flujo y Procesos</h3>
-                    <p class="text-box">Este espacio está preparado para visualizar los diagramas de actividades, casos de uso o secuencia del caso seleccionado.</p>
-                    <div class="image-dropzone" id="diagram-dropzone">
-                        <span>🖼️ Aquí se cargarán tus diagramas (Pronto envíame las imágenes)</span>
-                    </div>
-                </section>
+                <div id="diagrams-container" class="diagrams-wrapper">
+                    <!-- Se renderizan automáticamente las imágenes desde script.js -->
+                </div>
             </div>
 
             <!-- MÓDULO 4: REGLAS DE NEGOCIO Y RIESGOS -->
