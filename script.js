@@ -24,6 +24,23 @@ const bankingProblems = [
                 gherkin: "<b>Given</b> que el archivo de compensación diario muestra discrepancias<br><b>When</b> se ejecuta el motor de conciliación nocturna<br><b>Then</b> el sistema genera un reporte automático de cuentas afectadas para reversión."
             }
         ],
+        diagrams: [
+            {
+                title: "1. Diagrama de Casos de Uso (UML)",
+                desc: "Interacción entre el Cliente, el Analista de Operaciones y el Core Bancario.",
+                src: "IMAGES/Diagrama_CasosUso(uml).png"
+            },
+            {
+                title: "2. Diagrama de Actividades / Flujo de Negocio",
+                desc: "Flujo paso a paso con compuertas lógicas de decisión para la validación de idempotencia.",
+                src: "IMAGES/Diagrama_Activiades.png"
+            },
+            {
+                title: "3. Diagrama de Secuencia (UML)",
+                desc: "Intercambio técnico de peticiones entre App, API Gateway, Motor de Idempotencia y Core Bancario ante un Timeout.",
+                src: "IMAGES/Diagrama_Secuencia.png"
+            }
+        ],
         rules: [
             "Ventana de tiempo para validación de idempotencia: 60 segundos.",
             "Tolerancia máxima de monto para auto-reversión en conciliación: $10.000.000 COP.",
@@ -52,6 +69,7 @@ const bankingProblems = [
                 gherkin: "<b>Given</b> que el sensor del cajero confirma atasco sin entrega de efectivo<br><b>When</b> el ATM reporta la transacción como fallida al Core Bancario<br><b>Then</b> se ejecuta la reversión del saldo al cliente en menos de 24 horas."
             }
         ],
+        diagrams: [],
         rules: [
             "El cajero debe generar un ticket digital de error con código de dispositivo físico.",
             "La validación de arqueo físico debe coincidir con el reporte de fallas digitales del día."
@@ -85,7 +103,7 @@ function selectProblem(id, element) {
 }
 
 function displayProblemData(problem) {
-    // Módulo 1
+    // Módulo 1: Problema
     document.getElementById('problem-category').innerText = problem.category;
     document.getElementById('problem-title').innerText = problem.title;
     document.getElementById('problem-description').innerText = problem.description;
@@ -99,7 +117,7 @@ function displayProblemData(problem) {
         qContainer.appendChild(li);
     });
 
-    // Módulo 2 (HUs)
+    // Módulo 2: Historias de Usuario (HUs)
     const huContainer = document.getElementById('hu-container');
     huContainer.innerHTML = '';
     problem.hus.forEach(hu => {
@@ -113,7 +131,32 @@ function displayProblemData(problem) {
         huContainer.appendChild(div);
     });
 
-    // Módulo 4 (Reglas y Riesgos)
+    // Módulo 3: Diagramas
+    const diagContainer = document.getElementById('diagrams-container');
+    diagContainer.innerHTML = '';
+    
+    if (problem.diagrams && problem.diagrams.length > 0) {
+        problem.diagrams.forEach(diag => {
+            const section = document.createElement('section');
+            section.className = 'card-section diagram-card';
+            section.innerHTML = `
+                <h3>${diag.title}</h3>
+                <p class="text-box" style="margin-bottom: 12px;">${diag.desc}</p>
+                <div class="diagram-img-box">
+                    <img src="${diag.src}" alt="${diag.title}" class="diagram-img" onclick="window.open('${diag.src}', '_blank')">
+                </div>
+            `;
+            diagContainer.appendChild(section);
+        });
+    } else {
+        diagContainer.innerHTML = `
+            <section class="card-section">
+                <p class="text-box">No hay diagramas cargados para este caso aún.</p>
+            </section>
+        `;
+    }
+
+    // Módulo 4: Reglas y Riesgos
     const rulesContainer = document.getElementById('rules-list');
     rulesContainer.innerHTML = '';
     problem.rules.forEach(r => {
