@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portafolio Análisis Funcional - Casos Bancarios</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- Sidebar de Navegación por Módulos y Casos -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>🏦 Business Analyst</h2>
+                <p>Portafolio de Requerimientos</p>
+            </div>
+            
+            <div class="nav-section-title">Módulos del Análisis</div>
+            <ul class="module-nav">
+                <li class="module-btn active" onclick="switchModule('problem', this)">1. Problema de Negocio</li>
+                <li class="module-btn" onclick="switchModule('hu', this)">2. Historias de Usuario (HUs)</li>
+                <li class="module-btn" onclick="switchModule('diagrams', this)">3. Diagramas & Flujos</li>
+                <li class="module-btn" onclick="switchModule('rules', this)">4. Reglas de Negocio & Riesgos</li>
+            </ul>
+
+            <div class="sidebar-header" style="border-top: 1px solid var(--border-color); margin-top: 10px;">
+                <p style="font-size: 0.75rem; color: var(--accent-color);">Seleccionar Caso de Estudio:</p>
+            </div>
+            <ul id="problem-list" class="problem-list">
+                <!-- Se llena con JS -->
+            </ul>
+        </aside>
+
+        <!-- Área Principal de Contenido -->
+        <main class="main-content">
+            
+            <!-- MÓDULO 1: PROBLEMA DE NEGOCIO -->
+            <div id="module-problem" class="content-module active">
+                <header class="content-header">
+                    <span id="problem-category" class="category-badge">Categoría</span>
+                    <h1 id="problem-title">Título del Problema</h1>
+                </header>
+                <section class="card-section">
+                    <h3>📌 Descripción del Problema / Problem Statement</h3>
+                    <p id="problem-description" class="text-box">-</p>
+                </section>
+                <section class="card-section">
+                    <h3>🔍 Impacto Operativo / Business Impact</h3>
+                    <p id="problem-impact" class="text-box">-</p>
+                </section>
+                <section class="card-section">
+                    <h3>💡 Preguntas Clave de Análisis Funcional</h3>
+                    <ul id="problem-questions" class="questions-list"></ul>
+                </section>
+            </div>
+
+            <!-- MÓDULO 2: HISTORIAS DE USUARIO -->
+            <div id="module-hu" class="content-module">
+                <header class="content-header">
+                    <span class="category-badge">Ágil / Scrum</span>
+                    <h1>Historias de Usuario (HUs) & Criterios de Aceptación</h1>
+                </header>
+                <div id="hu-container">
+                    <!-- Se llena con JS para cada caso -->
+                </div>
+            </div>
+
+            <!-- MÓDULO 3: DIAGRAMAS -->
+            <div id="module-diagrams" class="content-module">
+                <header class="content-header">
+                    <span class="category-badge">Modelado UML / BPMN</span>
+                    <h1>Diagramas de Análisis y Secuencia</h1>
+                </header>
+                <section class="card-section">
+                    <h3>📊 Arquitectura de Flujo y Procesos</h3>
+                    <p class="text-box">Este espacio está preparado para visualizar los diagramas de actividades, casos de uso o secuencia del caso seleccionado.</p>
+                    <div class="image-dropzone" id="diagram-dropzone">
+                        <span>🖼️ Aquí se cargarán tus diagramas (Pronto envíame las imágenes)</span>
+                    </div>
+                </section>
+            </div>
+
+            <!-- MÓDULO 4: REGLAS DE NEGOCIO Y RIESGOS -->
+            <div id="module-rules" class="content-module">
+                <header class="content-header">
+                    <span class="category-badge">Gobierno & Control</span>
+                    <h1>Reglas de Negocio, Matriz RTM y Riesgos</h1>
+                </header>
+                <section class="card-section">
+                    <h3>⚙️ Reglas de Negocio (Business Rules)</h3>
+                    <ul id="rules-list" class="questions-list"></ul>
+                </section>
+                <section class="card-section">
+                    <h3>⚠️ Supuestos y Gestión de Riesgos (Assumptions & Risks)</h3>
+                    <ul id="risks-list" class="questions-list"></ul>
+                </section>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
