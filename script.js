@@ -15,13 +15,22 @@ const bankingProblems = [
                 code: "[HU-PAY-01]",
                 title: "Prevención de cargos duplicados por reintentos (Idempotencia)",
                 desc: "Como sistema de pagos, quiero identificar solicitudes repetidas para evitar un doble débito al cliente.",
-                gherkin: "<b>Given</b> que una compra tardó por intermitencia de red<br><b>When</b> el sistema recibe una petición idéntica en menos de 60 segundos<br><b>Then</b> debe aplicar idempotencia y rechazar el segundo cobro sin restar fondos."
+                funcional: "<b>Given</b> que una compra tardó por intermitencia de red<br><b>When</b> el sistema recibe una petición idéntica en menos de 60 segundos<br><b>Then</b> debe aplicar idempotencia y rechazar el segundo cobro sin restar fondos.",
+                noFuncional: "<b>Given</b> que se procesan múltiples peticiones simultáneas de pago<br><b>When</b> el motor de idempotencia evalúa las solicitudes<br><b>Then</b> el tiempo de respuesta de validación no debe superar los 300 milisegundos."
             },
             {
                 code: "[HU-PAY-02]",
                 title: "Conciliación automática de diferencias por compensación",
                 desc: "Como analista de operaciones, quiero cruzar los archivos de la franquicia con el core para marcar dobles cargos automáticamente.",
-                gherkin: "<b>Given</b> que el archivo de compensación diario muestra discrepancias<br><b>When</b> se ejecuta el motor de conciliación nocturna<br><b>Then</b> el sistema genera un reporte automático de cuentas afectadas para reversión."
+                funcional: "<b>Given</b> que el archivo de compensación diario muestra discrepancias<br><b>When</b> se ejecuta el motor de conciliación nocturna<br><b>Then</b> el sistema genera un reporte automático de cuentas afectadas para reversión.",
+                noFuncional: "<b>Given</b> un volumen superior a 100.000 transacciones diarias<br><b>When</b> se ejecute el proceso batch nocturno<br><b>Then</b> la conciliación completa debe finalizar en un tiempo menor a 45 minutos."
+            },
+            {
+                code: "[HU-PAY-03]",
+                title: "Notificación y Alerta Inmediata al Cliente por Doble Intento",
+                desc: "Como usuario de la aplicación móvil, quiero recibir una notificación instantánea si el sistema detecta y bloquea un cargo duplicado, para tener tranquilidad sobre el estado de mi dinero.",
+                funcional: "<b>Given</b> que el motor de idempotencia bloquea exitosamente un segundo cobro duplicado<br><b>When</b> la transacción es descartada de forma segura<br><b>Then</b> el sistema debe enviar una notificación push y un correo electrónico de confirmación al cliente.",
+                noFuncional: "<b>Given</b> que ocurre el bloqueo de un doble cargo<br><b>When</b> se genera la alerta digital hacia el cliente<br><b>Then</b> la notificación push debe entregarse en un tiempo máximo de 3 segundos tras el evento."
             }
         ],
         diagrams: [
@@ -66,7 +75,8 @@ const bankingProblems = [
                 code: "[HU-ATM-01]",
                 title: "Reversión automática por falla mecánica de cajero",
                 desc: "Como usuario afectado por un cajero atascado, quiero que se devuelva el dinero a mi cuenta de forma automática.",
-                gherkin: "<b>Given</b> que el sensor del cajero confirma atasco sin entrega de efectivo<br><b>When</b> el ATM reporta la transacción como fallida al Core Bancario<br><b>Then</b> se ejecuta la reversión del saldo al cliente en menos de 24 horas."
+                funcional: "<b>Given</b> que el sensor del cajero confirma atasco sin entrega de efectivo<br><b>When</b> el ATM reporta la transacción como fallida al Core Bancario<br><b>Then</b> se ejecuta la reversión del saldo al cliente en menos de 24 horas.",
+                noFuncional: "<b>Given</b> una falla de comunicación momentánea en el cajero<br><b>When</b> el ATM reintenta conectar con el servidor central<br><b>Then</b> el canal debe asegurar cifrado de grado bancario (TLS 1.3) para los datos del ticket de error."
             }
         ],
         diagrams: [],
@@ -117,7 +127,7 @@ function displayProblemData(problem) {
         qContainer.appendChild(li);
     });
 
-    // Módulo 2: Historias de Usuario (HUs)
+    // Módulo 2: Historias de Usuario (HUs) con Criterios Funcionales y No Funcionales
     const huContainer = document.getElementById('hu-container');
     huContainer.innerHTML = '';
     problem.hus.forEach(hu => {
@@ -126,7 +136,12 @@ function displayProblemData(problem) {
         div.innerHTML = `
             <div class="hu-title">${hu.code} - ${hu.title}</div>
             <div class="hu-desc">${hu.desc}</div>
-            <div class="gherkin-block">${hu.gherkin}</div>
+            
+            <div class="criteria-title">Criterios de Aceptación Funcionales</div>
+            <div class="gherkin-block">${hu.funcional}</div>
+            
+            <div class="criteria-title">Criterios de Aceptación No Funcionales</div>
+            <div class="gherkin-block">${hu.noFuncional}</div>
         `;
         huContainer.appendChild(div);
     });
