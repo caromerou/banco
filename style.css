@@ -65,7 +65,6 @@ body {
 
 .module-btn {
     padding: 10px 20px;
-    font-size: 0.85krem;
     font-size: 0.85rem;
     cursor: pointer;
     color: var(--text-muted);
@@ -144,19 +143,38 @@ body {
 .hu-desc { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 10px; }
 .gherkin-block { font-family: monospace; font-size: 0.82rem; background: #020617; padding: 10px; border-radius: 6px; color: #a5f3fc; line-height: 1.4; }
 
-/* Zona de dropzone de imágenes */
-.image-dropzone {
-    border: 2px dashed var(--border-color);
+/* Visualización de Diagramas */
+.diagrams-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.diagram-card {
+    background-color: rgba(15, 23, 42, 0.8);
+}
+
+.diagram-img-box {
+    background: #020617;
+    border: 1px solid var(--border-color);
     border-radius: 8px;
-    height: 180px;
+    padding: 15px;
     display: flex;
     justify-content: center;
     align-items: center;
-    text-align: center;
-    color: var(--text-muted);
-    font-size: 0.9rem;
-    margin-top: 10px;
-    background: rgba(15, 23, 42, 0.4);
+    overflow: hidden;
+}
+
+.diagram-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+}
+
+.diagram-img:hover {
+    transform: scale(1.02);
 }
 
 @media (max-width: 768px) {
