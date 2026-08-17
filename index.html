@@ -22,7 +22,7 @@
                 <li class="module-btn active" onclick="switchModule('problem', this)">1. Problema de Negocio</li>
                 <li class="module-btn" onclick="switchModule('hu', this)">2. Historias de Usuario (HUs)</li>
                 <li class="module-btn" onclick="switchModule('diagrams', this)">3. Diagramas & Flujos</li>
-                <li class="module-btn" onclick="switchModule('rules', this)">4. Reglas de Negocio & Riesgos</li>
+                <li class="module-btn" onclick="switchModule('rules', this)">4. Reglas & Matriz RTM</li>
             </ul>
 
             <div class="sidebar-header" style="border-top: 1px solid var(--border-color); margin-top: 10px;">
@@ -78,7 +78,7 @@
                 </div>
             </div>
 
-            <!-- MÓDULO 4: REGLAS DE NEGOCIO Y RIESGOS -->
+            <!-- MÓDULO 4: REGLAS DE NEGOCIO, MATRIZ RTM Y RIESGOS -->
             <div id="module-rules" class="content-module">
                 <header class="content-header">
                     <span class="category-badge">Gobierno & Control</span>
@@ -88,6 +88,20 @@
                     <h3>⚙️ Reglas de Negocio (Business Rules)</h3>
                     <ul id="rules-list" class="questions-list"></ul>
                 </section>
+                
+                <section class="card-section">
+                    <h3>📊 Matriz de Trazabilidad de Requisitos (RTM)</h3>
+                    <div id="rtm-table-content" class="rtm-table-container">
+                        <!-- Tabla RTM dinámica -->
+                    </div>
+                </section>
+
+                <!-- Contenedor dinámico para la imagen de la Matriz RTM -->
+                <div id="rtm-image-container" class="diagrams-wrapper"></div>
+
+                <!-- Contenedor dinámico para la imagen de Riesgos -->
+                <div id="risk-image-container" class="diagrams-wrapper"></div>
+
                 <section class="card-section">
                     <h3>⚠️ Supuestos y Gestión de Riesgos (Assumptions & Risks)</h3>
                     <ul id="risks-list" class="questions-list"></ul>
