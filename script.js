@@ -51,10 +51,25 @@ const bankingProblems = [
             }
         ],
         rules: [
-            "Ventana de tiempo para validación de idempotencia: 60 segundos.",
-            "Tolerancia máxima de monto para auto-reversión en conciliación: $10.000.000 COP.",
-            "Trazabilidad obligatoria en logs de auditoría por cada intento bloqueado."
+            "<b>BR-01 (Idempotencia):</b> Toda solicitud con la misma huella digital de transacción recibida en una ventana menor a 60 segundos debe ser interceptada como duplicada.",
+            "<b>BR-02 (Límite de Auto-reversión):</b> Montos inferiores a $10.000.000 COP con diferencias claras en conciliación aplican para auto-reversión operativa.",
+            "<b>BR-03 (Auditoría):</b> Cada bloqueo preventivo de pagos debe registrar traza inalterable en los logs de seguridad del core bancario."
         ],
+        rtmTable: [
+            { req: "REQ-01", hu: "[HU-PAY-01]", test: "TF-01: Validar bloqueo en reintento <60s", status: "Aprobado" },
+            { req: "REQ-02", hu: "[HU-PAY-02]", test: "TF-02: Cruce de archivos batch nocturnos", status: "Aprobado" },
+            { req: "REQ-03", hu: "[HU-PAY-03]", test: "TF-03: Entrega de notificación push en <3s", status: "En Pruebas" }
+        ],
+        rtmImage: {
+            title: "Gráfico de Matriz RTM (Requirements Traceability Matrix)",
+            desc: "Visualización de trazabilidad entre Requisitos de Negocio, Historias de Usuario, Casos de Prueba y Estado.",
+            src: "IMAGES/Matriz_RTM.png"
+        },
+        riskImage: {
+            title: "Gráfico de Gestión de Riesgos y Supuestos",
+            desc: "Mapa de calor y evaluación de impacto/probabilidad para los riesgos del sistema de pagos.",
+            src: "IMAGES/Matriz_Riesgos.png"
+        },
         risks: [
             "<b>Supuesto:</b> La pasarela externa responde con códigos de error estándar (Timeouts 504).",
             "<b>Riesgo:</b> Falsos positivos que bloqueen compras legítimas consecutivas del usuario en el mismo comercio."
@@ -81,9 +96,14 @@ const bankingProblems = [
         ],
         diagrams: [],
         rules: [
-            "El cajero debe generar un ticket digital de error con código de dispositivo físico.",
-            "La validación de arqueo físico debe coincidir con el reporte de fallas digitales del día."
+            "<b>BR-ATM-01:</b> El cajero debe generar un ticket digital de error inalterable con código de dispositivo físico.",
+            "<b>BR-ATM-02:</b> La validación de arqueo físico debe coincidir exactamente con el reporte de fallas digitales del día."
         ],
+        rtmTable: [
+            { req: "REQ-ATM-01", hu: "[HU-ATM-01]", test: "TF-ATM-01: Simulación de atasco de dispensador", status: "Aprobado" }
+        ],
+        rtmImage: null,
+        riskImage: null,
         risks: [
             "<b>Supuesto:</b> El cajero cuenta con conectividad permanente de red para reportar el estado del dispensador."
         ]
@@ -127,7 +147,7 @@ function displayProblemData(problem) {
         qContainer.appendChild(li);
     });
 
-    // Módulo 2: Historias de Usuario (HUs) con Criterios Funcionales y No Funcionales
+    // Módulo 2: Historias de Usuario (HUs)
     const huContainer = document.getElementById('hu-container');
     huContainer.innerHTML = '';
     problem.hus.forEach(hu => {
@@ -136,10 +156,8 @@ function displayProblemData(problem) {
         div.innerHTML = `
             <div class="hu-title">${hu.code} - ${hu.title}</div>
             <div class="hu-desc">${hu.desc}</div>
-            
             <div class="criteria-title">Criterios de Aceptación Funcionales</div>
             <div class="gherkin-block">${hu.funcional}</div>
-            
             <div class="criteria-title">Criterios de Aceptación No Funcionales</div>
             <div class="gherkin-block">${hu.noFuncional}</div>
         `;
@@ -171,14 +189,74 @@ function displayProblemData(problem) {
         `;
     }
 
-    // Módulo 4: Reglas y Riesgos
+    // Módulo 4: Reglas de Negocio, Matriz RTM y Riesgos
     const rulesContainer = document.getElementById('rules-list');
     rulesContainer.innerHTML = '';
     problem.rules.forEach(r => {
         const li = document.createElement('li');
-        li.innerText = r;
+        li.innerHTML = r;
         rulesContainer.appendChild(li);
     });
+
+    // Tabla RTM HTML
+    const rtmTableContainer = document.getElementById('rtm-table-content');
+    rtmTableContainer.innerHTML = '';
+    if (problem.rtmTable && problem.rtmTable.length > 0) {
+        let tableHTML = `
+            <table class="rtm-table">
+                <thead>
+                    <tr>
+                        <th>Requisito</th>
+                        <th>Historia de Usuario</th>
+                        <th>Caso de Prueba Asociado</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+        problem.rtmTable.forEach(row => {
+            tableHTML += `
+                <tr>
+                    <td><b>${row.req}</b></td>
+                    <td>${row.hu}</td>
+                    <td>${row.test}</td>
+                    <td><span style="color: #38bdf8; font-weight: 600;">${row.status}</span></td>
+                </tr>
+            `;
+        });
+        tableHTML += `</tbody></table>`;
+        rtmTableContainer.innerHTML = tableHTML;
+    }
+
+    // Gráfico Matriz RTM
+    const rtmImgContainer = document.getElementById('rtm-image-container');
+    rtmImgContainer.innerHTML = '';
+    if (problem.rtmImage) {
+        rtmImgContainer.innerHTML = `
+            <section class="card-section diagram-card">
+                <h3>${problem.rtmImage.title}</h3>
+                <p class="text-box" style="margin-bottom: 12px;">${problem.rtmImage.desc}</p>
+                <div class="diagram-img-box">
+                    <img src="${problem.rtmImage.src}" alt="${problem.rtmImage.title}" class="diagram-img" onclick="window.open('${problem.rtmImage.src}', '_blank')">
+                </div>
+            </section>
+        `;
+    }
+
+    // Gráfico de Riesgos
+    const riskImgContainer = document.getElementById('risk-image-container');
+    riskImgContainer.innerHTML = '';
+    if (problem.riskImage) {
+        riskImgContainer.innerHTML = `
+            <section class="card-section diagram-card">
+                <h3>${problem.riskImage.title}</h3>
+                <p class="text-box" style="margin-bottom: 12px;">${problem.riskImage.desc}</p>
+                <div class="diagram-img-box">
+                    <img src="${problem.riskImage.src}" alt="${problem.riskImage.title}" class="diagram-img" onclick="window.open('${problem.riskImage.src}', '_blank')">
+                </div>
+            </section>
+        `;
+    }
 
     const risksContainer = document.getElementById('risks-list');
     risksContainer.innerHTML = '';
